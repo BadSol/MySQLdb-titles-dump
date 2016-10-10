@@ -6,7 +6,6 @@ import MySQLdb
 import MySQLdb.cursors
 
 
-# @profile
 def main(argv):
     """
     Main body of the script, connect to databases and call link_databases method
@@ -25,7 +24,7 @@ def main(argv):
         password_2 = argv[5]
         host_2 = argv[6]
         db_name_2 = argv[7]
-        limit_of_rows = 100000
+        limit_of_rows = 100000  # This variable impacts memory usage
 
         database_1 = connect_to_database(user=user_1, password=password_1, db_name=db_name_1, host=host_1)
         validate_database(database_1, db_name_1)
@@ -49,7 +48,6 @@ def validate_database(database, db_name):
         sys.exit("Database: {} is not compatible for this operation".format(db_name))
 
 
-# @profile
 def link_databases(database_1, database_2, number_of_rows):
     """
     Initialize cursor objects, sets off target database autocommit
@@ -116,7 +114,7 @@ def connect_to_database(user, password, db_name='', host='localhost'):
     database = None
     try:
         database = MySQLdb.connect(user=user, passwd=password, db=db_name, host=host,
-                                   cursorclass=MySQLdb.cursors.SSCursor)
+                                   cursorclass=MySQLdb.cursors.SSCursor)  # using SSCursor limits memory consumption
 
     except MySQLdb.Error, e:
         print "MySQL Error [%d]: %s" % (e.args[0], e.args[1])
